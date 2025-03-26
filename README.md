@@ -11,5 +11,4 @@ LLM / - For Data Labeling with LLM Model API Calling
 main.py - For Functions Organized
 client_api.py - For Frontend API Calling Endpoints.
 
-Project Flow
-<img width="694" alt="image" src="https://github.com/user-attachments/assets/a48a2314-54f8-4743-aab9-add695227a72" />
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/a48a2314-54f8-4743-aab9-add695227a72" />
