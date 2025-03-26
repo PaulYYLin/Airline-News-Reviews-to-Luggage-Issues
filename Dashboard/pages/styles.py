@@ -291,5 +291,59 @@ def load_css():
             min-width: 0;
         }
     }
+
+    /* ====================
+       DATA FRAME STYLING - Table and data display
+    ==================== */
+    [data-testid="stDataFrame"] {
+        background-color: rgba(30, 30, 30, 0.7);
+        border-radius: 10px;
+        padding: 0px !important;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    [data-testid="stDataFrame"] table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    [data-testid="stDataFrame"] th {
+        background-color: rgba(20, 20, 20, 0.9) !important;
+        color: white !important;
+        font-weight: 600 !important;
+        padding: 12px 10px !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    [data-testid="stDataFrame"] td {
+        background-color: rgba(30, 30, 30, 0.6) !important;
+        color: white !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        padding: 10px !important;
+    }
+
+    [data-testid="stDataFrame"] tr:hover td {
+        background-color: rgba(50, 50, 50, 0.7) !important;
+    }
+
+    /* Custom progress bar styling for sentiment score */
+    [data-testid="stDataFrame"] [data-testid="progress-bar-container"] {
+        background-color: rgba(60, 60, 60, 0.4) !important;
+        border-radius: 5px !important;
+    }
+
+    [data-testid="stDataFrame"] [data-testid="progress-bar"] {
+        background: linear-gradient(90deg, 
+            rgba(255, 0, 0, 0.8) 0%, 
+            rgba(255, 165, 0, 0.8) 50%, 
+            rgba(0, 220, 0, 0.8) 100%) !important;
+    }
+
+    /* Hide DataEditor toolbar */
+    [data-testid="stDataFrame"] [data-testid="stDataFrameResizeIcon"],
+    [data-testid="stDataFrame"] button {
+        display: none !important;
+    }
 </style>
 """

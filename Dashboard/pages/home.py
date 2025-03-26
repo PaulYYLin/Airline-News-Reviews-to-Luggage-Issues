@@ -20,7 +20,9 @@ st.markdown('<div class="logo-description">Aviation Live Reviews - Luggage Prote
 # Button container - now directly below the logo with less space
 st.markdown("""
 <div class="button-container">
-    <button class="action-button">REALTIME</button>
+    <a href="/realtime" style="text-decoration: none;">
+        <button class="action-button">REALTIME</button>
+    </a>
     <button class="action-button">HISTORICAL</button>
 </div>
 """, unsafe_allow_html=True)
