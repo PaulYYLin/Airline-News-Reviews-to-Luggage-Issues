@@ -35,6 +35,7 @@ def fetch_cached_reviews(n=5):
         # Log error but don't display to avoid affecting UI
         print(f"Error fetching reviews: {e}")
         return []
+fresh_reviews = fetch_cached_reviews()
 
 # Initialize session state variables only once to avoid reruns
 if 'initialized' not in st.session_state:
