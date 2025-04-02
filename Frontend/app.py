@@ -2,6 +2,7 @@ import streamlit as st
 from styles import load_css
 import html
 from utils.operation import API_client
+import time
 
 # Initialize API client
 api_client = API_client()
@@ -22,7 +23,7 @@ st.markdown(load_css(), unsafe_allow_html=True)
 st.markdown('<div class="logo-text">AI-HUB</div>', unsafe_allow_html=True)
 st.markdown('<div class="logo-description">Aviation Information Hub</div>', unsafe_allow_html=True)
 
-# Create a cached function to fetch reviews (runs in background with caching)
+# Create a cached function to fetch reviews with consistent caching behavior
 @st.cache_data(ttl=300)  # Cache with 5 minute (300 sec) time-to-live
 def fetch_cached_reviews(n=5):
     """
@@ -30,17 +31,18 @@ def fetch_cached_reviews(n=5):
     Returns a list of review strings or empty list on error
     """
     try:
+        # Add timestamp to logging for debugging
+        print(f"Fetching fresh reviews at: {time.strftime('%H:%M:%S')}")
         return api_client.get_last_n_reviews_for_ticker(n)
     except Exception as e:
         # Log error but don't display to avoid affecting UI
         print(f"Error fetching reviews: {e}")
         return []
-fresh_reviews = fetch_cached_reviews()
 
-# Initialize session state variables only once to avoid reruns
-if 'initialized' not in st.session_state:
-    st.session_state.initialized = True
-    # Default values for immediate rendering
+# Initialize session state for reviews if not already set
+# This ensures we always have default content for the ticker
+if 'reviews' not in st.session_state:
+    # Default values that will display immediately
     st.session_state.reviews = [
         "I had a great time at WestJet lounge", 
         "The flight attendants were very helpful", 
@@ -48,42 +50,52 @@ if 'initialized' not in st.session_state:
         "My luggage was damaged during the flight",
         "Security at YVR was extremely efficient"
     ]
+
+# Try to fetch fresh reviews for this session
+# The @st.cache_data decorator ensures this only happens every 5 minutes
+fresh_reviews = fetch_cached_reviews()
+
+# Update reviews only if we have valid data from API
+# This prevents the ticker from going empty if the API call fails
+if fresh_reviews:
+    # Only update if we have valid data
+    print(f"Updating ticker with {len(fresh_reviews)} fresh reviews")
+    st.session_state.reviews = fresh_reviews
+
+# Initialize other session state variables if needed
+if 'initialized' not in st.session_state:
+    st.session_state.initialized = True
     st.session_state.chat_history = []
     st.session_state.waiting_for_response = False
     st.session_state.user_submitted = False
     st.session_state.last_question = ""
-
-# Attempt to get fresh reviews without blocking the UI
-# This won't cause a rerun since it's a cached function
-fresh_reviews = fetch_cached_reviews()
-if fresh_reviews:
-    # Only update if we have new data
-    st.session_state.reviews = fresh_reviews
 
 # Process reviews to ensure they're clean and non-empty
 def prepare_ticker_text():
     """
     Process reviews and prepare ticker text
     Handles empty reviews and formats for display
+    Always returns valid content for the ticker
     """
     clean_reviews = []
     for review in st.session_state.reviews:
         review_str = str(review).strip()
         if review_str:  # Only add non-empty strings
-            # 转义每条评论内容，但不转义分隔符
+            # Escape each review content for safe HTML display
             clean_reviews.append(html.escape(review_str))
             
-    # Fallback for empty content
+    # Fallback for empty content to ensure ticker always shows something
     if not clean_reviews:
         clean_reviews = ["Welcome to Aviation Information Hub"]
         
-    # 返回已经带有HTML间隔的字符串，不需要再次转义
+    # Return HTML-ready string with proper spacing between items
     return "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;✈️&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".join(clean_reviews)
 
 # Get ticker text without causing reruns
 ticker_text = prepare_ticker_text()
 
 # Calculate animation duration based on content length
+# Longer content gets more time to scroll across screen
 animation_duration = max(20, len(ticker_text) / 10)
 
 # Display ticker with animation
