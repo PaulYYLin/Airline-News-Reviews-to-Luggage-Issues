@@ -183,3 +183,4 @@ share/*
 src/*
 pyvenv.cfg
 .DS_Store
+*.tar
