@@ -37,7 +37,7 @@ class Reddit:
         self.QUERY = REDDIT_CONFIG.get("query", "luggage mishandled")
 
     
-    def get_historical_posts(self, subreddit_name='all', limit=1000, sort='new') -> pd.DataFrame:
+    def get_posts_from_subreddit(self, subreddit_name='all', limit=1000, sort='new') -> pd.DataFrame:
         """Get historical posts from a specified subreddit using Reddit API
         Args:
             subreddit_name (str): Name of the subreddit to get posts from ["travel","flight","flying","travelhacks","airtravel"]
@@ -54,7 +54,7 @@ class Reddit:
             posts_data = []
             posts_seen = set()
             
-            LUGGAGE_KEYWORDS = ["luggage", "bag", "lost", "delayed", "misplaced", "misrouted", "mishandled"]
+            LUGGAGE_KEYWORDS = ["luggage", "bag", "lost", "delay", "misplace", "misroute", "mishandle"]
             
             remaining = limit
             after = None
@@ -105,6 +105,7 @@ class Reddit:
                 return pd.DataFrame()
             
             posts_df = pd.DataFrame(posts_data)
+            posts_df = posts_df[posts_df['selftext'].notna() & (posts_df['selftext'] != '')]
             elapsed_time = time.time() - start_time
             logger.info(f"Successfully retrieved {len(posts_data)} posts in {elapsed_time:.2f}s")
             logger.info(f"DataFrame shape={posts_df.shape}, columns={posts_df.columns.tolist()}")
@@ -115,7 +116,7 @@ class Reddit:
             return pd.DataFrame()
 
 
-    def get_posts_from_subreddit(self, subreddit_name='all', limit=5, time_filter='month', sort='new') -> pd.DataFrame:
+    def get_search_posts(self, subreddit_name='all', limit=5, time_filter='month', sort='new') -> pd.DataFrame:
         """Get posts from a specified subreddit using Reddit API
         Args:
             subreddit_name (str): Name of the subreddit to get posts from
@@ -144,6 +145,7 @@ class Reddit:
                 return pd.DataFrame()
             
             posts_df = pd.DataFrame(posts_data)
+            posts_df = posts_df[posts_df['selftext'].notna() & (posts_df['selftext'] != '')]
             elapsed_time = time.time() - start_time
             logger.info(f"Successfully retrieved {len(posts_data)} posts in {elapsed_time:.2f}s")
             logger.info(f"DataFrame shape={posts_df.shape}, columns={posts_df.columns.tolist()}")
@@ -161,13 +163,13 @@ class Reddit:
             dict: Dictionary containing post data
         """
         return {
-            'post_id': str('reddit_' + post.id),
-            'subreddit': str(post.subreddit),
-            'title': str(post.title),
-            'created_utc': pd.to_datetime(datetime.fromtimestamp(post.created_utc, tz=timezone.utc).isoformat()),
-            'selftext': str(post.selftext),
-            'score': int(post.score),
-            'num_comments': int(post.num_comments),
+        'post_id': str('reddit_' + post.id),
+        'subreddit': str(post.subreddit),
+        'title': str(post.title),
+        'created_utc': pd.to_datetime(datetime.fromtimestamp(post.created_utc, tz=timezone.utc).isoformat()),
+        'selftext': str(post.selftext),
+        'score': int(post.score),
+        'num_comments': int(post.num_comments),
         }
 
 
@@ -175,5 +177,5 @@ class Reddit:
 
 if __name__ == "__main__":
     reddit = Reddit()
-    posts_data = reddit.get_posts_from_subreddit(subreddit_name="all", limit=100, time_filter="month", sort="new")
+    posts_data = reddit.get_search_posts(subreddit_name="all", limit=2, time_filter="month", sort="hot")
     print(posts_data)

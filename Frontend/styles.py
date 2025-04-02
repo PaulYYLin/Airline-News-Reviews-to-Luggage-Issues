@@ -224,6 +224,7 @@ def load_css():
         }
         
         .button-container {
+        display:block;
             flex-direction: row;
             justify-content: center;
             gap: 5px;
@@ -271,7 +272,7 @@ def load_css():
         /* Force horizontal button layout on small screens */
         .button-container {
             flex-direction: row !important; 
-            display: flex !important;
+            display:block;
             justify-content: space-between !important;
             align-items: center !important;
             flex-wrap: nowrap !important; 

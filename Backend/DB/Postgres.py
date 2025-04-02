@@ -79,7 +79,7 @@ class Database:
         inspector = inspect(self.engine)
         return inspector.get_table_names(schema=schema)
     
-    def get_table_data(self, table_name, limit=None):
+    def get_table_data(self, table_name, limit=None, query=None):
         """
         Get data from a specific table.
         
@@ -89,10 +89,14 @@ class Database:
         Returns:
             pandas.DataFrame: DataFrame containing table data
         """
-        if limit is not None:
-            query = f"SELECT * FROM {table_name} LIMIT {limit}" 
+        if table_name == "silver_airline_quality_reviews":
+            date_col = '"Review Date"'
+        elif table_name == "bronze_reddit_reviews":
+            date_col = "created_utc"
+        if limit is not None: 
+            query = f"SELECT * FROM {table_name} ORDER BY {date_col} DESC  LIMIT {limit} " 
         else:
-            query = f"SELECT * FROM {table_name}"
+            query = f"SELECT * FROM {table_name} ORDER BY {date_col} DESC"
         return pd.read_sql_query(query, self.engine)
     
     
@@ -193,7 +197,7 @@ class Database:
 if __name__ == "__main__":
     # Example usage
     db = Database()
-    df = db.get_table_data('bronze_reddit_reviews')
+    df = db.get_table_data('silver_consolidated_airline_reviews', limit=3)
     logger.info(f"Data: {df}")
 
 
