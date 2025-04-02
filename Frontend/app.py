@@ -40,16 +40,16 @@ def fetch_cached_reviews(n=5):
         return []
 
 # Initialize session state for reviews if not already set
-# This ensures we always have default content for the ticker
+# This ensures we always have a welcome message on initial page load
 if 'reviews' not in st.session_state:
-    # Default values that will display immediately
+    # Set initial welcome message that will display immediately
     st.session_state.reviews = [
-        "I had a great time at WestJet lounge", 
-        "The flight attendants were very helpful", 
-        "Terrible service and delayed flight",
-        "My luggage was damaged during the flight",
-        "Security at YVR was extremely efficient"
+        "Welcome to Aviation Information Hub - Loading latest aviation reviews...",
+        "Discover insights about airlines, airports, and more!",
+        "Ask questions using our AI assistant below"
     ]
+    # Flag to track if we're still showing the welcome message
+    st.session_state.showing_welcome = True
 
 # Try to fetch fresh reviews for this session
 # The @st.cache_data decorator ensures this only happens every 5 minutes
@@ -61,6 +61,11 @@ if fresh_reviews:
     # Only update if we have valid data
     print(f"Updating ticker with {len(fresh_reviews)} fresh reviews")
     st.session_state.reviews = fresh_reviews
+    # Set flag to indicate we're no longer showing the welcome message
+    st.session_state.showing_welcome = False
+elif 'showing_welcome' not in st.session_state:
+    # Ensure the showing_welcome flag is initialized if session state existed but flag didn't
+    st.session_state.showing_welcome = True
 
 # Initialize other session state variables if needed
 if 'initialized' not in st.session_state:
@@ -78,11 +83,17 @@ def prepare_ticker_text():
     Always returns valid content for the ticker
     """
     clean_reviews = []
+    
+    # Apply different styling if showing welcome message
     for review in st.session_state.reviews:
         review_str = str(review).strip()
         if review_str:  # Only add non-empty strings
             # Escape each review content for safe HTML display
-            clean_reviews.append(html.escape(review_str))
+            if st.session_state.showing_welcome:
+                # Add special styling to welcome message
+                clean_reviews.append(f"<span style='color:#ffcc00;font-weight:500'>{html.escape(review_str)}</span>")
+            else:
+                clean_reviews.append(html.escape(review_str))
             
     # Fallback for empty content to ensure ticker always shows something
     if not clean_reviews:
@@ -96,7 +107,11 @@ ticker_text = prepare_ticker_text()
 
 # Calculate animation duration based on content length
 # Longer content gets more time to scroll across screen
-animation_duration = max(20, len(ticker_text) / 10)
+# Slow down the welcome message for better readability
+animation_duration = max(25, len(ticker_text) / 10)
+if st.session_state.showing_welcome:
+    # Slow down welcome message for better readability
+    animation_duration = max(30, animation_duration)
 
 # Display ticker with animation
 st.markdown(f"""
