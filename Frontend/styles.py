@@ -10,7 +10,9 @@ def load_css():
     .st-emotion-cache-12fmjuu {
         background-color: black !important;
     }
-    
+    .st-emotion-cache-p38tq {
+        color: white !important;
+    }
 
     div[data-testid="stSelectbox"] > div > div > div {
         background-color: linear-gradient(to bottom, var(--bg-secondary), rgba(40, 40, 40, 0.6)) !important;
