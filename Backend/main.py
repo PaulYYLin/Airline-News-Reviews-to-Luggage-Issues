@@ -1,10 +1,7 @@
 from fastapi import FastAPI, Query, Body
 from exe import Executor
-from typing import Optional, Dict, Any
+from typing import Dict, Any
 import uvicorn
-from pydantic import BaseModel
-import pandas as pd
-from io import StringIO
 import time
 
 
@@ -253,18 +250,20 @@ if __name__ == "__main__":
     base_url = "http://localhost:8000"
     
     # # Test the endpoint
-    # try:
-    #     print("Testing /query_data_from_db endpoint...")
-    #     response = requests.post(
-    #         f"{base_url}/query_data_from_db",
-    #         params={
-    #             "table_name": "silver_airline_quality_reviews",
-    #             "limit": 5,
-    #         }
-    #     )
-    #     print(f"Status Code: {response.status_code}")
-    #     print(f"Response: {response.json()}")
-    # except Exception as e:
-    #     print(f"Error testing endpoint: {str(e)}")
-    # Keep the main thread running
+    try:
+        print("Testing /trigger_realtime_reddit_spider endpoint...")
+        response = requests.post(
+            f"{base_url}/trigger_realtime_reddit_spider",
+            params={
+                "subreddit_name": "all",
+                "time_filter": "day",
+                "limit": 5,
+                "sort": "new"
+            }
+        )
+        print(f"Status Code: {response.status_code}")
+        print(f"Response: {response.json()}")
+    except Exception as e:
+        print(f"Error testing endpoint: {str(e)}")
+    #Keep the main thread running
     server_thread.join()

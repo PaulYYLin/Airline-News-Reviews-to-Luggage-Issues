@@ -244,6 +244,17 @@ st.markdown('''
 </div>
 ''', unsafe_allow_html=True)
 
+st.markdown("""
+<div class="button-container">
+    <a href="/" target="_self" style="text-decoration: none;">
+        <button class="action-button">ChatBot</button>
+    </a>
+    <a href="predict" target="_self" style="text-decoration: none;">
+        <button class="action-button">Predictor</button>
+    </a>
+</div>
+""", unsafe_allow_html=True)
+
 # Get list of airlines (use cached list if available)
 if st.session_state.airlines_list is None:
     with st.spinner("Loading airlines..."):
@@ -586,3 +597,5 @@ st.markdown("""
         <a href="/" class="nav-link">← Return to Home</a>
     </div>
 """, unsafe_allow_html=True)
+
+

@@ -2,7 +2,6 @@ import streamlit as st
 from styles import load_css
 import html
 from utils.operation import API_client
-import time
 
 # Initialize API client
 api_client = API_client()
@@ -128,10 +127,10 @@ st.markdown(f"""
 st.markdown("""
 <div class="button-container">
     <a href="dashboard" target="_self" style="text-decoration: none;">
-        <button class="action-button">STATISTICIAN</button>
+        <button class="action-button">Dashboard</button>
     </a>
     <a href="predict" target="_self" style="text-decoration: none;">
-        <button class="action-button">PROPHET</button>
+        <button class="action-button">Predictor</button>
     </a>
 </div>
 """, unsafe_allow_html=True)

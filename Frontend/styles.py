@@ -1,10 +1,51 @@
-"""
-共用的樣式定義，可被所有頁面導入
-"""
 
 def load_css():
     return """
 <style>
+    /* Force dark theme regardless of browser settings */
+    .stApp {
+        background-color: #121212 !important;
+        background-image: none !important;
+    }
+    .st-emotion-cache-12fmjuu {
+        background-color: black !important;
+    }
+    
+
+    div[data-testid="stSelectbox"] > div > div > div {
+        background-color: linear-gradient(to bottom, var(--bg-secondary), rgba(40, 40, 40, 0.6)) !important;
+    }
+    /* Ensure all Streamlit elements use dark background */
+    div.stTextInput, div.stTextArea, div.stButton, div.stSelectbox, div.stMultiselect {
+        background-color: rgba(30, 30, 30, 0.7) !important;
+    }
+    .stTextInput > div > div > input, .stTextArea > div > div > textarea, .stSelectbox > div > div, .stMultiselect > div > div, .stSlider > div, .stDateInput > div > div {
+        background-color: linear-gradient(to bottom, var(--bg-secondary), rgba(40, 40, 40, 0.6)) !important;
+    }
+    /* Override Streamlit text input */
+    div[data-testid="stTextInput"] > div > div > input {
+        background-color:rgba(40, 40, 40, 0.6)) !important;
+        color: white !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    /* Override Streamlit select box */
+    div[data-testid="stSelectbox"] > div > div > div {
+        background-color: rgba(50, 50, 50, 0.8) !important;
+        color: white !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+    
+    /* Force all text to be light colored */
+    .stMarkdown, .stText, p, span, label, .stSelectbox, .stSlider {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+    
+    /* Ensure dark background for sidebar */
+    .css-1d391kg, .css-12oz5g7 {
+        background-color: rgba(20, 20, 20, 0.9) !important;
+    }
+    
     /* ====================
        CSS VARIABLES - Color scheme and theme settings
     ==================== */

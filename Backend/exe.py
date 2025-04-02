@@ -1,11 +1,9 @@
 from DB.Postgres import Database
 from Spiders.Reddit import Reddit
 from LLM.chatbot import Chatbot
-from Spiders.Airquality import Airquality
 import time
 import pandas as pd
 import datetime
-from io import StringIO
 import threading
 
 class Executor:
@@ -72,6 +70,7 @@ class Executor:
         return num_posts
     
     def trigger_airquality_spider(self, days_before_today:int):
+        from Spiders.Airquality import Airquality
         airquality = Airquality(days_before_today=days_before_today)
         reviews_df = airquality.get_reviews()
         self.db.store_data(reviews_df, "silver_airline_quality_reviews", primary_key="Id")
