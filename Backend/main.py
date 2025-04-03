@@ -250,20 +250,20 @@ if __name__ == "__main__":
     base_url = "http://localhost:8000"
     
     # # Test the endpoint
-    try:
-        print("Testing /trigger_realtime_reddit_spider endpoint...")
-        response = requests.post(
-            f"{base_url}/trigger_realtime_reddit_spider",
-            params={
-                "subreddit_name": "all",
-                "time_filter": "day",
-                "limit": 5,
-                "sort": "new"
-            }
-        )
-        print(f"Status Code: {response.status_code}")
-        print(f"Response: {response.json()}")
-    except Exception as e:
-        print(f"Error testing endpoint: {str(e)}")
+    # try:
+    #     print("Testing /trigger_realtime_reddit_spider endpoint...")
+    #     response = requests.post(
+    #         f"{base_url}/trigger_realtime_reddit_spider",
+    #         params={
+    #             "subreddit_name": "all",
+    #             "time_filter": "day",
+    #             "limit": 5,
+    #             "sort": "new"
+    #         }
+    #     )
+    #     print(f"Status Code: {response.status_code}")
+    #     print(f"Response: {response.json()}")
+    # except Exception as e:
+    #     print(f"Error testing endpoint: {str(e)}")
     #Keep the main thread running
     server_thread.join()
