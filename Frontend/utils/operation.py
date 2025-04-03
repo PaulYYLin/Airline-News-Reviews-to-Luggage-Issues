@@ -12,7 +12,7 @@ class API_client:
     """
     def __init__(self):
         # self.base_url = "http://localhost:8000"
-        self.base_url = "http://44.211.159.128:8000"
+        self.base_url = "http://3.88.135.131:8000"
         # Lightweight cache for frontend (shorter expiry to ensure fresh data)
         self.cache_timestamp = time.time()
         self.cache_expiry = 120  # 2 minutes 
