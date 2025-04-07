@@ -11,4 +11,4 @@ This project aims to create a centralized dashboard that offers insights on lugg
 - main.py - For Functions Organized
 - client_api.py - For Frontend API Calling Endpoints.
 
-<img width="500" alt="image" src="https://github.com/user-attachments/assets/a48a2314-54f8-4743-aab9-add695227a72" />
+<img width="500" alt="image" src="https://github.com/PaulYYLin/Airline-News-Reviews-to-Luggage-Issues/blob/main/DATA608_Project_v3d.png" />
